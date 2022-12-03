@@ -1,0 +1,9 @@
+# Nix
+.direnv
+result
+
+# env
+.env
+
+# log
+*.log

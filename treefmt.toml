@@ -1,0 +1,7 @@
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.yamlfmt]
+command = "yamlfmt"
+includes = ["*.yml", "*.yaml"]

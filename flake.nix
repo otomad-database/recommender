@@ -31,6 +31,8 @@
             treefmt
             dprint
             yamlfmt
+            taplo-cli
+            deno
           ];
         };
       }

@@ -5,3 +5,15 @@ includes = ["*.nix"]
 [formatter.yamlfmt]
 command = "yamlfmt"
 includes = ["*.yml", "*.yaml"]
+
+[formatter.taplo]
+command = "taplo"
+options = ["format"]
+includes = ["*.toml"]
+
+[formatter.deno-fmt]
+command = "deno"
+options = ["fmt"]
+includes = [
+  "*.json", "*.jsonc", "*.md", "*.js", "*.jsx", "*.ts", "*.tsx"]
+

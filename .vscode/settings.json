@@ -1,6 +1,12 @@
 {
   "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
 
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.importMap": "./import_map.json",
+  "deno.config": "./deno.jsonc",
+  "deno.internalDebug": true,
+
   "files.exclude": {
     "**/.direnv": true
   },

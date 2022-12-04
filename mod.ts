@@ -11,8 +11,11 @@ const protoPath = new URL("./recommender.proto", import.meta.url);
 const protoFile = await Deno.readTextFile(protoPath);
 
 const neo4jDriver = neo4j.driver(
-  "bolt://localhost:7687",
-  neo4j.auth.basic("neo4j", "password"),
+  Deno.env.get("NEO4J_URL")!,
+  neo4j.auth.basic(
+    Deno.env.get("NEO4J_USERNAME")!,
+    Deno.env.get("NEO4J_PASSWORD")!,
+  ),
 );
 
 server.addService<Recommender>(protoFile, {

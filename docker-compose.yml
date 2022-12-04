@@ -1,12 +1,13 @@
 version: "3.9"
-
 services:
   neo4j:
     image: neo4j:5.2
     ports:
+      # http
       - target: 7474
         published: 7474
-      - target: 7687 # web ui
+      # bolt
+      - target: 7687
         published: 7687
     volumes:
       - type: volume
@@ -24,7 +25,6 @@ services:
     #   - neo4j-core-import:/var/lib/neo4j/import
     #   - neo4j-core-metrics:/metrics
     #   - neo4j-core-plugins:/plugins
-
 volumes:
   neo4j_data:
   neo4j_logs:

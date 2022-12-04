@@ -1,0 +1,32 @@
+{
+  "tasks": {
+    "dev": "deno run --watch -A --import-map ./import_map.json ./mod.ts",
+    "run": "deno run -A --import-map ./import_map.json ./mod.ts",
+    "lint": "deno lint",
+    "generate": "deno run --allow-read https://deno.land/x/grpc_basic@0.4.6/gen/dts.ts ./recommender.proto > ./recommender.d.ts",
+    "result": "deno run -A --import-map ./import_map.json ./utils/export.ts",
+    "dataload": "deno run -A --import-map ./import_map.json ./loader.ts"
+  },
+  "lint": {
+    "files": {
+      "exclude": [
+        "recommender.d.ts"
+      ]
+    }
+  },
+  "fmt": {
+    "options": {
+      "lineWidth": 120,
+      "indentWidth": 2,
+      "singleQuote": false,
+      "useTabs": false
+    },
+    "files": {
+      "exclude": [
+        "./deno.lock",
+        "utils/*/*.json",
+        "recommender.d.ts"
+      ]
+    }
+  }
+}

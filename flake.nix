@@ -33,8 +33,10 @@
             yamlfmt
             taplo-cli
             deno
+            grpcurl
           ];
         };
+        devshell.startup.deno_task_generate.text = "deno task generate";
       }
     );
 }

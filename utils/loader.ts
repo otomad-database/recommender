@@ -3,13 +3,13 @@ import { gql, request } from "graphql-request";
 
 const query = gql`
   query {
-    videos(input: {limit: 100}) {
+    tags(input: { limit: 100 }) {
       nodes {
         id
-        title
-        tags {
+        name
+        taggedVideos {
           id
-          name
+          title
         }
       }
     }
@@ -17,14 +17,14 @@ const query = gql`
 `;
 
 const data = await request<
-  { videos: { nodes: { id: string; title: string; tags: { id: string; name: string }[] }[] } }
+  { tags: { nodes: { id: string; name: string; taggedVideos: { id: string; title: string }[] }[] } }
 >(Deno.env.get("GRAPHQL_API_ENDPOINT")!, query);
 
-const videos = data.videos.nodes.map(
-  ({ id: videoId, tags, title }) => ({
+const tags = data.tags.nodes.map(
+  ({ id: videoId, name, taggedVideos }) => ({
     id: videoId,
-    title,
-    tags: tags.map(({ id, name }) => ({ id, name })),
+    name,
+    taggedVideos: taggedVideos.map(({ id, title }) => ({ id, title })),
   }),
 );
 
@@ -38,25 +38,30 @@ const neo4jDriver = neo4j.driver(
 
 const session = neo4jDriver.session();
 try {
-  for (const video of videos) {
+  await session.run("MATCH (n) DETACH DELETE n");
+  for (const tag of tags) {
     await session.run(
       `
-      MERGE (v:Video {id: $id})
-      SET v.title = $title
-      RETURN v
+      MERGE (t:Tag {id: $id})
+      SET t.name = $name
+      RETURN t
       `,
-      { id: video.id, title: video.title },
+      { id: tag.id.split(":").at(1)!, name: tag.name },
     );
-    for (const tag of video.tags) {
+    for (const video of tag.taggedVideos) {
       await session.run(
         `
-        MATCH (v:Video {id: $video_id})
-        MERGE (t:Tag {id: $tag_id})
-        SET t.name = $name
+        MATCH (t:Tag {id: $tag_id})
+        MERGE (v:Video {id: $video_id})
+        SET v.title = $title
         MERGE (v)-[:TAGGED_BY]->(t)
         RETURN t
         `,
-        { tag_id: tag.id, video_id: video.id, name: tag.name },
+        {
+          tag_id: tag.id.split(":").at(1)!,
+          video_id: video.id.split(":").at(1)!,
+          title: video.title,
+        },
       );
     }
   }

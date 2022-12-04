@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package otomadb;
+
+service Recommender {
+  rpc GetSimilarVideos (GetSimilarVideosRequest) returns (GetSimilarVideosReply) {}
+}
+
+message GetSimilarVideosRequest {
+  string video_id = 1;
+  uint32 limit = 2;
+}
+
+message GetSimilarVideosReply {
+  message Similarity {
+    string video_id = 1;
+    double score = 2;
+  }
+  repeated Similarity similarities = 1;
+}

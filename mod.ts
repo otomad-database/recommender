@@ -25,7 +25,13 @@ server.addService<Recommender>(protoFile, {
 
     try {
       const similarities = await calcByJaccardIndex(neo4jDriver, videoId, { limit });
-      return { similarities: similarities.map(({ videoId, jaccard }) => ({ videoId, score: jaccard })) };
+
+      return {
+        similarities: similarities.map(({ videoId, jaccard }) => ({
+          videoId: `video:${videoId}`,
+          score: jaccard,
+        })),
+      };
     } catch {
       throw error(Status.UNAVAILABLE);
     }

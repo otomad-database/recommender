@@ -1,11 +1,11 @@
 {
+  "importMap": "./import_map.json",
   "tasks": {
-    "dev": "deno run --watch -A --import-map ./import_map.json ./mod.ts",
-    "run": "deno run -A --import-map ./import_map.json ./mod.ts",
+    "dev": "deno run --watch -A ./mod.ts",
+    "run": "deno run -A ./mod.ts",
     "lint": "deno lint",
     "generate": "deno run --allow-read https://deno.land/x/grpc_basic@0.4.6/gen/dts.ts ./recommender.proto > ./recommender.d.ts",
-    "result": "deno run -A --import-map ./import_map.json ./utils/export.ts",
-    "dataload": "deno run -A --import-map ./import_map.json ./loader.ts"
+    "dataload": "deno run -A ./utils/loader.ts"
   },
   "lint": {
     "files": {
